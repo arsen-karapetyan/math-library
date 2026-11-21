@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="hy">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Մաթեմատիկայի թվային գրադարան</title>
+  <meta name="description" content="Համալսարանական մաթեմատիկայի դասախոսությունների և սեմինարների անձնական PDF գրադարան։">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%234457d6'/%3E%3Ctext x='32' y='45' font-size='38' text-anchor='middle' fill='white' font-family='serif'%3E%CE%A3%3C/text%3E%3C/svg%3E">
+  <link rel="preload" href="fonts/Shushi_Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="fonts/Shushi_Bold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#lectures">Անցնել բովանդակությանը</a>
+
+  <header class="nav" id="nav">
+    <a class="brand" href="#home">Մաթեմատիկա</a>
+    <button class="burger" id="burger" aria-expanded="false" aria-controls="menu" aria-label="Բացել մենյուն">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="menu" id="menu" aria-label="Հիմնական նավիգացիա">
+      <a href="#home" data-section="home">Գլխավոր էջ</a>
+      <a href="#lectures" data-section="lectures">Դասախոսություններ</a>
+      <a href="#seminars" data-section="seminars">Սեմինարներ</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="home" aria-labelledby="title">
+      <p class="affil">ՀՊՏՀ, ՏՏ և տվյալագիտության ֆակուլտետ, «Տեղեկատվական համակարգեր» բաժին, 1-ին կուրս, 2-րդ խումբ, 1-ին կիսամյակ</p>
+      <h1 id="title">Մաթեմատիկայի թվային գրադարան</h1>
+      <p class="lead">Համալսարանական դասախոսությունների և սեմինարների ձեռագիր գրառումները՝ մեկ տեղում. որոնեք ըստ ամսաթվի կամ թեմայի և բացեք անհրաժեշտ PDF-ը։</p>
+
+      <dl class="overview" aria-label="Նյութերի ամփոփում">
+        <div><dt>PDF փաստաթուղթ</dt><dd id="count-total">0</dd></div>
+        <div><dt>դասախոսություն</dt><dd id="count-lectures">0</dd></div>
+        <div><dt>սեմինար</dt><dd id="count-seminars">0</dd></div>
+      </dl>
+
+      <div class="finder glass" role="search">
+        <label class="search" for="q">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <span class="sr">Որոնում փաստաթղթերում</span>
+          <input id="q" type="search" placeholder="Որոնել՝ ամսաթիվ, ամիս կամ թեմա" autocomplete="off">
+        </label>
+        <div class="chips" role="group" aria-label="Զտում ըստ կատեգորիայի">
+          <button type="button" class="chip" data-cat="all" aria-pressed="true">Բոլորը</button>
+          <button type="button" class="chip" data-cat="lecture" aria-pressed="false">Դասախոսություններ</button>
+          <button type="button" class="chip" data-cat="seminar" aria-pressed="false">Սեմինարներ</button>
+        </div>
+      </div>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="block" id="lectures" aria-labelledby="h-lectures">
+      <header class="block-head">
+        <h2 id="h-lectures">Դասախոսություններ</h2>
+        <p>Դասախոս՝ Դավիդովա։ Ամենանորը վերևում է։</p>
+      </header>
+      <ol class="docs glass" id="list-lectures"></ol>
+    </section>
+
+    <section class="block" id="seminars" aria-labelledby="h-seminars">
+      <header class="block-head">
+        <h2 id="h-seminars">Սեմինարներ</h2>
+        <p>Դասախոս՝ Բարխուդարյան։ Ամենանորը վերևում է։</p>
+      </header>
+      <ol class="docs glass" id="list-seminars"></ol>
+    </section>
+
+    <section class="empty glass" id="empty" hidden>
+      <h2>Ոչինչ չի գտնվել</h2>
+      <p>Փորձեք մեկ այլ բառ, ամսաթիվ (օրինակ՝ 09.09.2026) կամ թեմա (օրինակ՝ «որոշիչ», «բազիս», «մատրից»)։</p>
+      <button type="button" class="btn" id="reset">Մաքրել որոնումը</button>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p>Մաթեմատիկայի թվային գրադարան. անձնական ուսումնական նյութեր։</p>
+    <p class="copy">© Arsen Karapetyan 2026</p>
+  </footer>
+
+  <script src="data/documents.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
