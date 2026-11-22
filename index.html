@@ -3,6 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#edf1fa" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0c0f1f" media="(prefers-color-scheme: dark)">
   <title>Գծային հանրահաշիվ և վերլուծական երկրաչափություն</title>
   <meta name="description" content="Համալսարանական «Գծային հանրահաշիվ և վերլուծական երկրաչափություն» առարկայի դասախոսությունների և սեմինարների PDF գրադարան։">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%234457d6'/%3E%3Ctext x='32' y='45' font-size='38' text-anchor='middle' fill='white' font-family='serif'%3E%CE%A3%3C/text%3E%3C/svg%3E">
@@ -36,6 +39,7 @@
         <div><dt>դասախոսություն</dt><dd id="count-lectures">0</dd></div>
         <div><dt>սեմինար</dt><dd id="count-seminars">0</dd></div>
       </dl>
+      <p class="updated" id="updated" hidden>Վերջին թարմացում՝ <time id="updated-time"></time></p>
 
       <div class="finder glass" role="search">
         <label class="search" for="q">
@@ -49,7 +53,11 @@
           <button type="button" class="chip" data-cat="seminar" aria-pressed="false">Սեմինարներ</button>
         </div>
       </div>
+      <div class="activebar" id="activebar" hidden>
+        <button type="button" class="pill" id="clear-topic"></button>
+      </div>
       <p class="status" id="status" role="status" aria-live="polite"></p>
+      <p class="sr" id="announce" role="status" aria-live="polite"></p>
     </section>
 
     <section class="block" id="lectures" aria-labelledby="h-lectures">
@@ -71,7 +79,7 @@
     <section class="empty glass" id="empty" hidden>
       <h2>Ոչինչ չի գտնվել</h2>
       <p>Փորձեք մեկ այլ բառ, ամսաթիվ (օրինակ՝ 09.09.2026) կամ թեմա (օրինակ՝ «որոշիչ», «բազիս», «մատրից»)։</p>
-      <button type="button" class="btn" id="reset">Մաքրել որոնումը</button>
+      <button type="button" class="btn" id="reset">Մաքրել զտիչները</button>
     </section>
   </main>
 
