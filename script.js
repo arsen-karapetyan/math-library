@@ -5,8 +5,8 @@
                 "հուլիս", "օգոստոս", "սեպտեմբեր", "հոկտեմբեր", "նոյեմբեր", "դեկտեմբեր"];
   // Դասախոսի ազգանունը որոշում է կատեգորիան
   var LECTURERS = {
-    "Դավիդովա":     { cat: "lecture", label: "Դասախոսություն" },
-    "Բարխուդարյան": { cat: "seminar", label: "Սեմինար" }
+    "Դավիդովա":     { cat: "lecture", label: "Դասախոսություն", full: "Դիանա Դավիդովա" },
+    "Բարխուդարյան": { cat: "seminar", label: "Սեմինար", full: "Վահե Բարխուդարյան" }
   };
 
   // «dd.mm.yyyy - Ազգանուն.pdf» (տարին կարող է լինել նաև երկնիշ)
@@ -20,12 +20,16 @@
     var year = m[3].length === 2 ? 2000 + parseInt(m[3], 10) : parseInt(m[3], 10);
     var day = parseInt(m[1], 10), month = parseInt(m[2], 10);
     var dateStr = m[1] + "." + m[2] + "." + year;
+    var id = who.cat + "-" + year + "-" + m[2] + "-" + m[1];
+    var n = 2, base = id;
+    while (docs.some(function (x) { return x.id === id; })) id = base + "-" + n++;
     docs.push({
+      id: id,
       file: d.file, pages: d.pages, topics: d.topics || [], description: d.description,
-      lecturer: m[4], cat: who.cat, catLabel: who.label,
+      lecturer: m[4], lecturerFull: who.full, cat: who.cat, catLabel: who.label,
       day: m[1], month: MONTHS[month - 1], year: year, dateStr: dateStr,
       time: Date.UTC(year, month - 1, day),
-      hay: norm([dateStr, m[1] + "." + m[2], MONTHS[month - 1], year, m[4], who.label,
+      hay: norm([dateStr, m[1] + "." + m[2], MONTHS[month - 1], year, m[4], who.full, who.label,
                  d.topics ? d.topics.join(" ") : "", d.description].join(" "))
     });
   });
@@ -55,6 +59,7 @@
 
   function card(d) {
     var li = el("li", "doc " + d.cat);
+    li.id = d.id;
 
     var date = el("div", "date");
     date.appendChild(el("b", null, d.day));
@@ -67,19 +72,25 @@
     var t = el("time", null, d.dateStr);
     t.setAttribute("datetime", d.year + "-" + d.file.slice(3, 5) + "-" + d.day);
     meta.appendChild(t);
-    meta.appendChild(el("span", null, "Դասախոս՝ " + d.lecturer));
+    meta.appendChild(el("span", null, "Դասախոս՝ " + d.lecturerFull));
     if (d.pages) meta.appendChild(el("span", null, d.pages + " էջ"));
+    var share = el("button", "share", "Պատճենել հղումը");
+    share.type = "button";
+    share.addEventListener("click", function () { copyLink(d.id, share); });
+    meta.appendChild(share);
     body.appendChild(meta);
     var p = el("p", "desc clamp", d.description);
     body.appendChild(p);
     var more = el("button", "more", "Կարդալ ավելին");
     more.type = "button";
     more.setAttribute("aria-expanded", "false");
-    more.addEventListener("click", function () {
-      var open = !p.classList.toggle("clamp");
+    function setOpen(open) {
+      p.classList.toggle("clamp", !open);
       more.textContent = open ? "Ծալել" : "Կարդալ ավելին";
       more.setAttribute("aria-expanded", String(open));
-    });
+    }
+    more.addEventListener("click", function () { setOpen(p.classList.contains("clamp")); });
+    li.expand = function () { setOpen(true); };
     body.appendChild(more);
     if (d.topics.length) {
       var ul = el("ul", "topics");
@@ -92,7 +103,7 @@
     a.href = "pdfs/" + encodeURIComponent(d.file);
     a.target = "_blank";
     a.rel = "noopener";
-    a.setAttribute("aria-label", "Բացել PDF-ը՝ " + d.catLabel.toLowerCase() + ", " + d.dateStr + ", " + d.lecturer + " (նոր ներդիրում)");
+    a.setAttribute("aria-label", "Բացել PDF-ը՝ " + d.catLabel.toLowerCase() + ", " + d.dateStr + ", " + d.lecturerFull + " (նոր ներդիրում)");
     a.innerHTML = "<span>Բացել PDF-ը</span>" + ICON;
     li.appendChild(a);
     return li;
@@ -134,11 +145,44 @@
     });
   });
 
-  $("reset").addEventListener("click", function () {
+  function resetFilters() {
     state.q = ""; state.cat = "all"; input.value = "";
     chips.forEach(function (x) { x.setAttribute("aria-pressed", String(x.getAttribute("data-cat") === "all")); });
-    render(); input.focus();
-  });
+    render();
+  }
+  $("reset").addEventListener("click", function () { resetFilters(); input.focus(); });
+
+  // Յուրաքանչյուր փաստաթղթի առանձին հղում (#seminar-2026-10-28)
+  function copyLink(id, btn) {
+    var url = location.href.split("#")[0] + "#" + id;
+    function done() {
+      btn.textContent = "Հղումը պատճենվեց";
+      setTimeout(function () { btn.textContent = "Պատճենել հղումը"; }, 2000);
+    }
+    function fallback() {
+      var t = document.createElement("textarea");
+      t.value = url; t.setAttribute("readonly", "");
+      t.style.cssText = "position:fixed;opacity:0";
+      document.body.appendChild(t); t.select();
+      try { document.execCommand("copy"); done(); } catch (e) { window.prompt("Պատճենեք հղումը՝", url); }
+      document.body.removeChild(t);
+    }
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(url).then(done, fallback);
+    else fallback();
+  }
+
+  function openFromHash() {
+    var id = decodeURIComponent(location.hash.slice(1));
+    var target = docs.filter(function (d) { return d.id === id; })[0];
+    if (!target) return;
+    if (!matches(target)) resetFilters();
+    var li = document.getElementById(id);
+    if (!li) return;
+    if (li.expand) li.expand();
+    li.classList.remove("target"); void li.offsetWidth; li.classList.add("target");
+    li.scrollIntoView({ block: "start" });
+  }
+  window.addEventListener("hashchange", openFromHash);
 
   // Բջջային մենյու
   var burger = $("burger"), menu = $("menu");
@@ -166,4 +210,5 @@
   }
 
   render();
+  openFromHash();
 })();
