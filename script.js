@@ -70,7 +70,17 @@
     meta.appendChild(el("span", null, "Դասախոս՝ " + d.lecturer));
     if (d.pages) meta.appendChild(el("span", null, d.pages + " էջ"));
     body.appendChild(meta);
-    body.appendChild(el("p", "desc", d.description));
+    var p = el("p", "desc clamp", d.description);
+    body.appendChild(p);
+    var more = el("button", "more", "Կարդալ ավելին");
+    more.type = "button";
+    more.setAttribute("aria-expanded", "false");
+    more.addEventListener("click", function () {
+      var open = !p.classList.toggle("clamp");
+      more.textContent = open ? "Ծալել" : "Կարդալ ավելին";
+      more.setAttribute("aria-expanded", String(open));
+    });
+    body.appendChild(more);
     if (d.topics.length) {
       var ul = el("ul", "topics");
       d.topics.forEach(function (x) { ul.appendChild(el("li", null, x)); });
