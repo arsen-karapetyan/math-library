@@ -110,7 +110,7 @@ main{width:min(940px,calc(100% - 28px));margin:0 auto}
 .block-head{margin:0 6px 16px}
 .block-head h2{font:700 clamp(1.6rem,3.6vw,2.2rem)/1.2 var(--serif);margin:0}
 .block-head p{margin:4px 0 0;color:var(--muted);font-size:.95rem}
-.docs{list-style:none;margin:0;padding:6px 26px;border-radius:28px}
+.docs{list-style:none;margin:0;padding:0}
 
 .doc{display:grid;grid-template-columns:84px 1fr auto;gap:8px 26px;align-items:start;padding:26px 0;border-top:1px solid var(--line)}
 .doc:first-child{border-top:0}
@@ -169,7 +169,7 @@ mark{background:var(--mark-bg);color:var(--mark-ink);border-radius:4px;padding:0
 .btn.ghost[data-state="done"] .i-check,
 .btn.ghost[data-state="fail"] .i-fail{opacity:1;transform:none}
 
-.empty{margin:34px 0 10px;padding:38px 30px;border-radius:28px;text-align:center}
+.empty{margin:34px 0 10px;padding:38px 0;text-align:center}
 .empty h2{font:700 1.5rem var(--serif);margin:0 0 8px}
 .empty p{margin:0 auto 20px;max-width:34em;color:var(--muted)}
 [hidden]{display:none!important}
@@ -188,7 +188,7 @@ mark{background:var(--mark-bg);color:var(--mark-ink);border-radius:4px;padding:0
   .overview{flex-wrap:wrap;row-gap:18px}
   .overview>div{padding:2px 14px;min-width:0}
   .overview dt{font-size:.82rem}
-  .docs{padding:2px 18px;border-radius:24px}
+  .docs{padding:0}
   .doc{grid-template-columns:1fr;gap:6px;padding:22px 0}
   .date{display:flex;align-items:baseline;gap:8px;text-align:left}
   .date b{font-size:2rem}
