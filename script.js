@@ -6,10 +6,10 @@
   // Ծննդական հոլովով՝ «22 նոյեմբերի 2026» տեսքի համար
   var MONTHS_GEN = ["հունվարի", "փետրվարի", "մարտի", "ապրիլի", "մայիսի", "հունիսի",
                     "հուլիսի", "օգոստոսի", "սեպտեմբերի", "հոկտեմբերի", "նոյեմբերի", "դեկտեմբերի"];
-  // Դասախոսի ազգանունը որոշում է կատեգորիան
+  // Դասախոսի ազգանունը որոշում է կատեգորիան (ֆայլերի անուններում մնում է միայն ազգանունը)
   var LECTURERS = {
-    "Դավիդովա":     { cat: "lecture", label: "Դասախոսություն" },
-    "Բարխուդարյան": { cat: "seminar", label: "Սեմինար" }
+    "Դավիդովա":     { cat: "lecture", label: "Դասախոսություն", full: "Դիանա Դավիդովա" },
+    "Բարխուդարյան": { cat: "seminar", label: "Սեմինար",       full: "Վահե Բարխուդարյան" }
   };
 
   // «dd.mm.yyyy - Ազգանուն.pdf» (տարին կարող է լինել նաև երկնիշ)
@@ -25,10 +25,10 @@
     var dateStr = m[1] + "." + m[2] + "." + year;
     docs.push({
       file: d.file, pages: d.pages, topics: d.topics || [], description: d.description,
-      lecturer: m[4], cat: who.cat, catLabel: who.label,
+      lecturer: who.full, cat: who.cat, catLabel: who.label,
       day: m[1], month: MONTHS[month - 1], year: year, dateStr: dateStr,
       time: Date.UTC(year, month - 1, day),
-      hay: norm([dateStr, m[1] + "." + m[2], MONTHS[month - 1], year, m[4], who.label,
+      hay: norm([dateStr, m[1] + "." + m[2], MONTHS[month - 1], year, who.full, who.label,
                  d.topics ? d.topics.join(" ") : "", d.description].join(" "))
     });
   });
@@ -273,7 +273,7 @@
       var items = docs.filter(function (d) { return d.cat === cat && matches(d); });
       items.forEach(function (d) { list.appendChild(card(d)); });
       blocks[cat].hidden = items.length === 0;
-      shown += items.length;
+      shown+= items.length;
     });
     $("empty").hidden = shown !== 0;
     var filtered = state.q.trim() !== "" || state.cat !== "all" || state.topic !== "";
